@@ -5,7 +5,11 @@ import dev.failsafe.internal.util.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import data.DataHelper;
+import org.openqa.selenium.chrome.ChromeOptions;
 import page.LoginPageV2;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -13,6 +17,12 @@ class MoneyTransferTest {
 
     @BeforeEach
     void setup() {
+        ChromeOptions options = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<String, Object>();
+        prefs.put("credentials_enable_service", false);
+        prefs.put("password_manager_enable", false);
+        options.setExperimentalOption("prefs", prefs);
+        Configuration.browserCapabilities = options;
         Configuration.holdBrowserOpen = true;
     }
 
