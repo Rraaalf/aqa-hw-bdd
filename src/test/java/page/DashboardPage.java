@@ -11,13 +11,10 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class DashboardPage {
-    private SelenideElement heading = $("[data-test-id=dashboard]");
-    private SelenideElement refresh = $("#root > div > button");
-    private ElementsCollection cards = $$(".list__item div");
-    private final String balanceStart = "баланс: ";
-    private final String balanceFinish = " р.";
+    private final ElementsCollection cards = $$(".list__item div");
 
     public DashboardPage() {
+        SelenideElement heading = $("[data-test-id=dashboard]");
         heading.shouldBe(visible);
     }
 
@@ -27,13 +24,14 @@ public class DashboardPage {
     }
 
     public int getCardBalance(DataHelper.CardInfo cardInfo) {
-        refresh.click();
         val number = cards.findBy(text(cardInfo.getCardNumber().substring(15, 19))).getText();
         return extractBalance(number);
     }
 
     private int extractBalance(String text) {
+        String balanceStart = "баланс: ";
         val start = text.indexOf(balanceStart);
+        String balanceFinish = " р.";
         val finish = text.indexOf(balanceFinish);
         val value = text.substring(start + balanceStart.length(), finish);
         return Integer.parseInt(value);
